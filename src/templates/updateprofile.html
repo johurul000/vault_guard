@@ -1,0 +1,89 @@
+{% extends "base-profile.html" %}
+
+{% block javascripts %}
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <style>
+    body {
+      background-color: white;
+    }
+    .container {
+      margin-top: 50px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label {
+      font-weight: bold;
+    }
+    .form-control {
+      border-radius: 0;
+    }
+    .btn-primary {
+      border-radius: 0;
+    }
+  </style>
+{% endblock %}
+
+{% block title %}Update Profile{% endblock%}
+
+
+{% block maincontent %}
+
+<div class="container">
+  <h1>Update Profile</h1>
+  <form method="post">
+    {% csrf_token %}
+    
+    <div class="form-group">
+      <label for="bankName">Username</label>
+      <input type="text" class="form-control" name="username" value="{{ user_instance.username }}" required>
+    </div>
+
+    <div class="form-group">
+      <label for="accountHolderName">First Name</label>
+      <input type="text" class="form-control"  name="first_name" value="{{ user_instance.first_name }}">
+    </div>
+
+    <div class="form-group">
+      <label for="accountNumber">Last Name</label>
+      <input type="text" class="form-control" name="last_name" value="{{ user_instance.last_name }}" >
+    </div>
+
+    <div class="form-group">
+      <label for="ifscCode">Email</label>
+      <input type="email" class="form-control" name="email" value="{{ user_instance.email }}" >
+    </div>
+    
+
+    <button type="submit" class="btn btn-primary">Update Profile</button> <br><br><br>
+  </form>
+</div>
+<script>
+  const inputBoxes = document.querySelectorAll('.pin-input input');
+
+  // Add event listener to each input box
+  inputBoxes.forEach((input, index) => {
+      input.addEventListener('input', (event) => {
+          const currentInput = event.target;
+          const maxLength = parseInt(currentInput.getAttribute('maxlength'));
+
+          // Move the cursor to the next input box if the maximum length is reached
+          if (currentInput.value.length === maxLength) {
+              if (index < inputBoxes.length - 1) {
+                  inputBoxes[index + 1].focus();
+              } else {
+                  // Submit the form if it's the last input box
+                  // currentInput.form.submit();
+              }
+          }
+      });
+  });
+</script>
+
+{% endblock %}

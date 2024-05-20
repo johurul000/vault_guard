@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+
+{% block javascripts %}
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/quickpindialog.css' %}">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <style>
+    body {
+      background-color: white;
+    }
+    .container {
+      margin-top: 50px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label {
+      font-weight: bold;
+    }
+    .form-control {
+      border-radius: 0;
+    }
+    .btn-primary {
+      border-radius: 0;
+    }
+    .expiration-date {
+      display: flex;
+
+    }
+  </style>
+{% endblock %}
+
+{% block title %}Add Card{% endblock%}
+
+{% block maincontent %}
+
+<div class="container">
+  <h1>Add Payment Card</h1>
+  <form method="post">
+    {% csrf_token %}
+    
+    <div class="form-group">
+      <label for="cardHolderName">Card Holder Name</label>
+      <input type="text" class="form-control" id="cardHolderName" name="card_holder_name" value="{{ card_holder_name }}" required>
+    </div>
+
+    <div class="form-group">
+      <label for="cardType">Card Type</label>
+      <input type="text" class="form-control" id="cardType" name="card_type" value="{{ card_type }}" placeholder="e.g Visa, MasterCard" required>
+    </div>
+
+    <div class="form-group">
+      <label for="cardNumber">Card Number</label>
+      <input type="text" class="form-control" id="cardNumber" maxlength="16" name="card_number" value="{{ card_number }}" required>
+    </div>
+
+    <div class="form-group">
+      <label for="cvv">CVV</label>
+      <input type="password" class="form-control" id="cvv" maxlength="3" name="cvv"  required>
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+          <i class="fa fa-eye-slash" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="expirationMonth">Expiration Date</label>
+      <div class="expiration-date">
+          <select class="form-control exp-select" id="expirationMonth" name="expiration_month" required>
+              <option value="">Select Month</option>
+              <option value="01">01 - January</option>
+              <option value="02">02 - February</option>
+              <option value="03">03 - March</option>
+              <option value="04">04 - April</option>
+              <option value="05">05 - May</option>
+              <option value="06">06 - June</option>
+              <option value="07">07 - July</option>
+              <option value="08">08 - August</option>
+              <option value="09">09 - September</option>
+              <option value="10">10 - October</option>
+              <option value="11">11 - November</option>
+              <option value="12">12 - December</option>
+          </select>
+    
+          <select class="form-control exp-select" id="expirationYear" name="expiration_year" required>
+              <option value="">Select Year</option>
+              <option value="2022">2022</option>
+              <option value="2023">2023</option>
+              <option value="2024">2024</option>
+              <option value="2025">2025</option>
+              <option value="2026">2026</option>
+              <option value="2027">2027</option>
+              <option value="2028">2028</option>
+              <option value="2029">2029</option>
+              <option value="2030">2030</option>
+          </select>
+      </div>
+      
+    </div>
+         
+
+    <div class="form-group">
+      <label for="notes">Notes</label>
+      <textarea class="form-control" id="notes" name="notes" rows="5">{{ notes }}</textarea>
+    </div>
+
+    <label for="">Enter Your Pin: </label>
+    <div class="pin-input">
+      
+      <input class="pin-input" type="text" pattern="\d" maxlength="1" name="digit1" required>
+      <input class="pin-input" type="text" pattern="\d" maxlength="1" name="digit2" required>
+      <input class="pin-input" type="text" pattern="\d" maxlength="1" name="digit3" required>
+      <input class="pin-input" type="text" pattern="\d" maxlength="1" name="digit4" required>
+
+      {% if messages %}
+          <span class="alert alert-danger pin-message">
+            {% for message in messages %}
+              <p style="color: red; font-size: smaller; text-align: center;">{{ message }}</p>    
+            {% endfor %}
+          </span>
+      {% endif %}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Add Payment Card</button>
+  </form>
+</div>
+<script>
+  const inputBoxes = document.querySelectorAll('.pin-input input');
+
+  // Add event listener to each input box
+  inputBoxes.forEach((input, index) => {
+      input.addEventListener('input', (event) => {
+          const currentInput = event.target;
+          const maxLength = parseInt(currentInput.getAttribute('maxlength'));
+
+          // Move the cursor to the next input box if the maximum length is reached
+          if (currentInput.value.length === maxLength) {
+              if (index < inputBoxes.length - 1) {
+                  inputBoxes[index + 1].focus();
+              } else {
+                  // Submit the form if it's the last input box
+                  // currentInput.form.submit();
+              }
+          }
+      });
+  });
+
+
+  document.getElementById("togglePassword").addEventListener("click", function() {
+      var passwordInput = document.getElementById("cvv");
+      var eyeIcon = this.querySelector("i");
+  
+      if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        eyeIcon.classList.remove("fa-eye-slash");
+        eyeIcon.classList.add("fa-eye");
+      } else {
+        passwordInput.type = "password";
+        eyeIcon.classList.remove("fa-eye");
+        eyeIcon.classList.add("fa-eye-slash");
+      }
+    });
+</script>
+
+{% endblock %}

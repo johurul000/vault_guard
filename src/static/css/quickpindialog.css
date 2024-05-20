@@ -1,0 +1,22 @@
+.pin-input {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+  }
+
+.pin-input input {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    text-align: center;
+    margin: 0 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    /* background-color: aqua; */
+    border: 1px solid black;
+}
+
+.pin-input input:focus {
+    outline: none;
+}

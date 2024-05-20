@@ -1,0 +1,106 @@
+{% extends "base-profile.html" %}
+
+{% block javascripts %}
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/quickpindialog.css' %}">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <style>
+    body {
+      background-color: white;
+    }
+    .container {
+      margin-top: 50px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label {
+      font-weight: bold;
+    }
+    .form-control {
+      border-radius: 0;
+    }
+    .btn-primary {
+      border-radius: 0;
+    }
+  </style>
+{% endblock %}
+
+{% block title %}Profile{% endblock%}
+
+
+{% block maincontent %}
+
+<div class="container">
+    <h1>Update QuickPin</h1>
+    <div>
+        {% if messages %}
+          <span class="">
+            {% for message in messages %}
+              <p style="color: red; font-size: smaller; text-align: center; font-weight: bold;">{{ message }}</p>    
+            {% endfor %}
+          </span>
+      {% endif %}
+    </div>
+    <form method="post">
+      {% csrf_token %}
+  
+        <label for="">Enter Your Current Pin: </label>
+        <div class="pin-input">
+            <input class="pin-input" type="text" pattern="\d" maxlength="1" name="digit1" required>
+            <input class="pin-input" type="text" pattern="\d" maxlength="1" name="digit2" required>
+            <input class="pin-input" type="text" pattern="\d" maxlength="1" name="digit3" required>
+            <input class="pin-input" type="text" pattern="\d" maxlength="1" name="digit4" required>
+        </div>
+
+
+        <label for="">Enter New Pin: </label>
+        <div class="pin-input">
+            <input class="pin-input" type="text" pattern="\d" maxlength="1" name="digit5" required>
+            <input class="pin-input" type="text" pattern="\d" maxlength="1" name="digit6" required>
+            <input class="pin-input" type="text" pattern="\d" maxlength="1" name="digit7" required>
+            <input class="pin-input" type="text" pattern="\d" maxlength="1" name="digit8" required>
+
+        </div>
+
+        <label for="">Confirm New Pin: </label>
+        <div class="pin-input">
+            <input class="pin-input" type="text" pattern="\d" maxlength="1" name="digit9" required>
+            <input class="pin-input" type="text" pattern="\d" maxlength="1" name="digit10" required>
+            <input class="pin-input" type="text" pattern="\d" maxlength="1" name="digit11" required>
+            <input class="pin-input" type="text" pattern="\d" maxlength="1" name="digit12" required>
+
+        </div>
+  
+      <br>
+      <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+  </div>
+  <script>
+    const inputBoxes = document.querySelectorAll('.pin-input input');
+
+    // Add event listener to each input box
+    inputBoxes.forEach((input, index) => {
+        input.addEventListener('input', (event) => {
+            const currentInput = event.target;
+            const maxLength = parseInt(currentInput.getAttribute('maxlength'));
+
+            // Move the cursor to the next input box if the maximum length is reached
+            if (currentInput.value.length === maxLength) {
+                if (index < inputBoxes.length - 1) {
+                    inputBoxes[index + 1].focus();
+                } else {
+                    // Submit the form if it's the last input box
+                    // currentInput.form.submit();
+                }
+            }
+        });
+    });
+  </script>
+
+{% endblock %}

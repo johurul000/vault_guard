@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Pin Entry</title>
+  <style>
+    .pin-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      /* border: 2px solid black; */
+    }
+
+    .pin-input {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .pin-input input {
+      width: 40px;
+      height: 40px;
+      font-size: 20px;
+      text-align: center;
+      margin: 0 5px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
+    .pin-input input:focus {
+      outline: none;
+    }
+
+    .pin-submit {
+      margin-top: 10px;
+      padding: 10px 15px;
+      font-weight: bold;
+    }
+    .pin-container-2 {
+        display: flex;
+        /* justify-content: center; */
+        align-items: center;
+        flex-direction: column;
+        border: 2px solid black;
+        width: 600px;
+        height: 400px;
+        /* padding-top: 100px; */
+    }
+
+    .pin-heading {
+        margin-top: 50px;
+        margin-bottom: 60px;
+    }
+
+    .pin-mismatch {
+
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <div class="pin-container">
+    <div class="pin-container-2">
+        <h3 class="pin-heading">Enter Your Quick Pin</h3>
+        {% if messages %}
+            <div class="alert alert-danger">
+                {% for message in messages %}
+                    <p style="color: red; font-size: smaller; text-align: center;">{{ message }}</p>    
+                {% endfor %}
+            </div>
+        {% endif %}
+        <form method="POST" id="pinForm">
+            {% csrf_token %}
+            <label for="">Enter Your Pin: </label>
+            <div class="pin-input">
+              
+              <input class="pin-input" type="text" pattern="\d" maxlength="1" name="digit1" required>
+              <input class="pin-input" type="text" pattern="\d" maxlength="1" name="digit2" required>
+              <input class="pin-input" type="text" pattern="\d" maxlength="1" name="digit3" required>
+              <input class="pin-input" type="text" pattern="\d" maxlength="1" name="digit4" required>
+            </div>
+             <br>
+            <input class="pin-submit" type="submit" value="Submit">
+          </form>
+    </div>    
+  </div>
+  <script>
+    const inputBoxes = document.querySelectorAll('.pin-input input');
+
+    // Add event listener to each input box
+    inputBoxes.forEach((input, index) => {
+        input.addEventListener('input', (event) => {
+            const currentInput = event.target;
+            const maxLength = parseInt(currentInput.getAttribute('maxlength'));
+
+            // Move the cursor to the next input box if the maximum length is reached
+            if (currentInput.value.length === maxLength) {
+                if (index < inputBoxes.length - 1) {
+                    inputBoxes[index + 1].focus();
+                } else {
+                    // Submit the form if it's the last input box
+                    // currentInput.form.submit();
+                }
+            }
+        });
+    });
+  </script>
+</body>
+</html>

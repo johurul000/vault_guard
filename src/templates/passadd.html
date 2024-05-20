@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block javascripts %}
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/quickpindialog.css' %}">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
+
+{% block title %}Add password{% endblock%}
+
+{% block maincontent %}
+<div class="container">
+  <h1>Add Password</h1>
+  <form method="post">
+    {% csrf_token %}
+
+    <div class="form-group">
+      <label for="websiteName">Website Name</label>
+      <input type="text" class="form-control" id="websiteName" name="websiteName" value="{{ websiteName }}" required>
+    </div>
+
+    <div class="form-group">
+      <label for="websiteUrl">Website URL</label>
+      <input type="text" class="form-control" id="websiteUrl" name="websiteUrl" value="{{ websiteUrl }}" required>
+    </div>
+
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input type="text" class="form-control" id="username" name="username" value="{{ username }}" required>
+    </div>
+
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" class="form-control" id="password" name="password" value="{{ password }}" required>
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+          <i class="fa fa-eye-slash" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="notes">Notes</label>
+      <textarea class="form-control" id="notes" name="notes" rows="3">{{ notes }}</textarea>
+    </div>
+
+    <label for="">Enter Your Pin: </label>
+    <div class="pin-input">
+      
+      <input class="pin-input" type="text" pattern="\d" maxlength="1" name="digit1" required>
+      <input class="pin-input" type="text" pattern="\d" maxlength="1" name="digit2" required>
+      <input class="pin-input" type="text" pattern="\d" maxlength="1" name="digit3" required>
+      <input class="pin-input" type="text" pattern="\d" maxlength="1" name="digit4" required>
+
+      {% if messages %}
+          <span class="alert alert-danger pin-message">
+            {% for message in messages %}
+              <p style="color: red; font-size: smaller; text-align: center;">{{ message }}</p>    
+            {% endfor %}
+          </span>
+      {% endif %}
+    </div>
+    
+
+    <br>
+    <button type="submit" class="btn btn-primary">Save</button>
+  </form>
+</div>
+<script>
+  document.getElementById("togglePassword").addEventListener("click", function() {
+    var passwordInput = document.getElementById("password");
+    var eyeIcon = this.querySelector("i");
+
+    if (passwordInput.type === "password") {
+      passwordInput.type = "text";
+      eyeIcon.classList.remove("fa-eye-slash");
+      eyeIcon.classList.add("fa-eye");
+    } else {
+      passwordInput.type = "password";
+      eyeIcon.classList.remove("fa-eye");
+      eyeIcon.classList.add("fa-eye-slash");
+    }
+  });
+
+
+  const inputBoxes = document.querySelectorAll('.pin-input input');
+
+  // Add event listener to each input box
+  inputBoxes.forEach((input, index) => {
+      input.addEventListener('input', (event) => {
+          const currentInput = event.target;
+          const maxLength = parseInt(currentInput.getAttribute('maxlength'));
+
+          // Move the cursor to the next input box if the maximum length is reached
+          if (currentInput.value.length === maxLength) {
+              if (index < inputBoxes.length - 1) {
+                  inputBoxes[index + 1].focus();
+              } else {
+                  // Submit the form if it's the last input box
+                  // currentInput.form.submit();
+              }
+          }
+      });
+  });
+</script>
+
+{% endblock %}

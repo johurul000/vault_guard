@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% block javascripts %}
+
+  {% load static %}
+    <script src="{% static 'js/bankview.js' %}"></script>
+    <script src="{% static 'js/bankedit.js' %}"></script>
+    <script src="{% static 'js/bankdelete.js' %}"></script>
+
+    <link rel="stylesheet" href="{% static 'css/quickpindialog.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+{% endblock %}
+
+{% block title %}Dashboard{% endblock%}
+
+
+
+{% block maincontent %}
+<section class="main">
+  <!-- <div class="main-header"></div> -->
+  <!-- <div class="secondary-header"></div> -->
+  <div class="main-top">
+    <h1 class="h1x" style="font-weight: bold; font-size: 2.5rem;">Bank Accounts</h1>
+    <a class="btn btn-primary add-item" href="{% url 'addbank' %}">Add Bank A/C</a>
+  </div>
+  <br>
+  <div class="main-top">
+  </div>
+  <div class="skills-list">
+    {% for bank in banks %}
+      <div class="cardx">
+        <h4>{{ bank.bank_name }}</h4>
+        <h5>{{ bank.account_holder_name}}</h5>
+        <p> XXXXX-XXXXXXXXX-{{ bank.ac_no_last_four }} </p>
+        <a class="link-btn" href="#" onclick="openConfirmPinBankView('{{ bank.bank_id }}')">View</a>
+        <a class="link-btn" href="#" onclick="openConfirmPinBankEdit('{{ bank.bank_id }}')">Edit</a>
+        <a class="link-btn" href="#" onclick="openConfirmPinBankDelete('{{ bank.bank_id }}')">Delete</a>
+      </div>
+    {% empty %}
+      <li>No Bank Accounts available.</li>
+    {% endfor %}
+  </div>
+
+</section>
+
+
+{% endblock %}
+
+
+
+{% block bankDialog %}
+
+<form id="confirmPinBankView" class="modal custom-modal" tabindex="-1" role="dialog">
+  {% csrf_token %}
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Enter Quick PIN</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <h5 id="error-message-bank-view" style="color: red;"></h5>
+          <label for="digit1" style="font-weight: bold;">Quick PIN to View Bank Details: </label>
+          <div class="pin-input">
+            <input class="pin-input" type="text" pattern="\d" maxlength="1" id="digit221" name="digit1" required>
+            <input class="pin-input" type="text" pattern="\d" maxlength="1" id="digit222" name="digit2" required>
+            <input class="pin-input" type="text" pattern="\d" maxlength="1" id="digit223" name="digit3" required>
+            <input class="pin-input" type="text" pattern="\d" maxlength="1" id="digit224" name="digit4" required>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-primary">Confirm</button>
+      </div>
+    </div>
+  </div>
+</form>
+
+
+<!-- Dialog box to confirm pin before editing password (editpass.js)  -->
+
+<form id="confirmPinBankEdit" class="modal custom-modal" tabindex="-1" role="dialog">
+  {% csrf_token %}
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Enter Quick PIN</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <h5 id="error-message-bank-edit" style="color: red;"></h5>
+          <label for="digit1" style="font-weight: bold;">Quick PIN to Edit Bank Details: </label>
+          <div class="pin-input">
+            <input class="pin-input" type="text" pattern="\d" maxlength="1" id="digit225" name="digit1" required>
+            <input class="pin-input" type="text" pattern="\d" maxlength="1" id="digit226" name="digit2" required>
+            <input class="pin-input" type="text" pattern="\d" maxlength="1" id="digit227" name="digit3" required>
+            <input class="pin-input" type="text" pattern="\d" maxlength="1" id="digit228" name="digit4" required>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-primary">Confirm</button>
+      </div>
+    </div>
+  </div>
+</form>
+
+
+<form id="confirmPinBankDelete" class="modal custom-modal" tabindex="-1" role="dialog">
+  {% csrf_token %}
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Enter Quick PIN</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <h5 id="error-message-bank-delete" style="color: red;"></h5>
+          <label for="digit1" style="font-weight: bold;">Quick PIN to Delete Bank Details: </label>
+          <div class="pin-input">
+            <input class="pin-input" type="text" pattern="\d" maxlength="1" id="digit229" name="digit1" required>
+            <input class="pin-input" type="text" pattern="\d" maxlength="1" id="digit320" name="digit2" required>
+            <input class="pin-input" type="text" pattern="\d" maxlength="1" id="digit321" name="digit3" required>
+            <input class="pin-input" type="text" pattern="\d" maxlength="1" id="digit322" name="digit4" required>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-primary">Confirm</button>
+      </div>
+    </div>
+  </div>
+</form>
+
+{% endblock %}

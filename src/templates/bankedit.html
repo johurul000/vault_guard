@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block javascripts %}
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/quickpindialog.css' %}">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <style>
+    body {
+      background-color: white;
+    }
+    .container {
+      margin-top: 50px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label {
+      font-weight: bold;
+    }
+    .form-control {
+      border-radius: 0;
+    }
+    .btn-primary {
+      border-radius: 0;
+    }
+  </style>
+{% endblock %}
+
+{% block title %}Edit Bank Details{% endblock%}
+
+{% block maincontent %}
+
+<div class="container">
+  <h1>Edit Bank Details</h1>
+  <form method="post">
+    {% csrf_token %}
+    
+    <div class="form-group">
+      <label for="bankName">Bank Name</label>
+      <input type="text" class="form-control" id="bankName" name="bank_name" value="{{ bank.bank_name }}" required>
+    </div>
+
+    <div class="form-group">
+      <label for="accountHolderName">Account Holder Name</label>
+      <input type="text" class="form-control" id="accountHolderName" name="account_holder_name" value="{{ bank.account_holder_name }}" required>
+    </div>
+
+    <div class="form-group">
+      <label for="accountNumber">Account Number</label>
+      <input type="text" class="form-control" id="accountNumber" name="account_number" value="{{ bank.account_number }}" required>
+    </div>
+
+    <div class="form-group">
+      <label for="ifscCode">IFSC Code</label>
+      <input type="text" class="form-control" id="ifscCode" name="ifsc_code" value="{{ bank.ifsc_code }}" required>
+    </div>
+
+    <div class="form-group">
+      <label for="branchAddress">Branch Address</label>
+      <input type="text" class="form-control" id="branchAddress" name="branch_address" value="{{ bank.branch_address }}">
+    </div>
+
+    <div class="form-group">
+      <label for="notes">Notes</label>
+      <textarea class="form-control" id="notes" name="notes" rows="5">{{ bank.notes }}</textarea>
+    </div>
+
+
+    <button type="submit" class="btn btn-primary">Update Bank Details</button> <br><br><br>
+  </form>
+</div>
+
+{% endblock %}
