@@ -57,7 +57,7 @@ https://github.com/johurul000/vault_guard/assets/90057499/8a7b609b-72e1-45bc-b2a
 
 4. **Set up PostgreSQL database**
 
-   Ensure PostgreSQL is installed and running. Create a database and update the `DATABASES` setting in `vault_guard/settings.py`:
+   Ensure PostgreSQL is installed and running. Create a database and update the `DATABASES` setting in `src/passvault/settings.py`:
 
    ```python
    DATABASES = {
